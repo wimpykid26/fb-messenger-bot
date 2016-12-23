@@ -37,9 +37,13 @@ def webhook():
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-                    message_text = messaging_event["message"]["text"]  # the message's text
-                    r = requests.get('http://tambal.azurewebsites.net/joke/random', auth=('user', 'pass'))
-                    send_message(sender_id, json.loads(r.text)['joke'])
+                    message_text = messaging_event["message"]["text"]
+                      # the message's text
+                    if message_text == 'joke':
+                        r = requests.get('http://tambal.azurewebsites.net/joke/random', auth=('user', 'pass'))
+                        send_message(sender_id, json.loads(r.text)['joke'])
+                    else:
+                        send_message('Hi Vaani, I can only joke. Please type joke and then laugh.')
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
