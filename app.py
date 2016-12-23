@@ -43,7 +43,7 @@ def webhook():
                         r = requests.get('http://tambal.azurewebsites.net/joke/random', auth=('user', 'pass'))
                         send_message(sender_id, json.loads(r.text)['joke'])
                     else:
-                        send_message('Hi Vaani, I can only joke. Please type joke and then laugh.')
+                        send_message(sender_id, 'Hi Vaani, I can only joke. Please type joke and then laugh.')
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
