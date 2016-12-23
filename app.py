@@ -16,8 +16,8 @@ def verify():
         if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
-
-    return "Hello world", 200
+    r = requests.get('http://tambal.azurewebsites.net/joke/random', auth=('user', 'pass'))
+    return json.loads(r.text)['joke'], 200
 
 
 @app.route('/', methods=['POST'])
@@ -38,8 +38,8 @@ def webhook():
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
-
-                    send_message(sender_id, "got it, thanks!")
+                    r = requests.get('http://tambal.azurewebsites.net/joke/random', auth=('user', 'pass'))
+                    send_message(sender_id, json.loads(r.text)['joke'])
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
